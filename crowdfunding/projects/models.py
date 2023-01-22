@@ -4,6 +4,11 @@ from django.contrib.auth import get_user_model #Django will find what model you 
 # Create your models here.
 
 User = get_user_model()
+CATEGORIES = (
+    ("Engineering", "Engineering"),
+    ("Chemistry", "Chemistry"),
+    
+)
 class Project(models.Model):
     title=models.CharField(max_length=200)
     description=models.TextField()
@@ -12,6 +17,7 @@ class Project(models.Model):
     video=models.URLField()
     is_open=models.BooleanField()
     date_created=models.DateTimeField(auto_now_add=True) 
+    category = models.CharField(max_length=200, null=True, choices= CATEGORIES)
     #(above)tells django when created to add at current time
     owner=models.ForeignKey( #need to change this (above) to foreignKey(other table primary key),user id
         User,

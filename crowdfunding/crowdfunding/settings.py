@@ -35,13 +35,21 @@ INSTALLED_APPS = [
     "projects.apps.ProjectsConfig", #ProjectsConfig more specific
     "users.apps.UsersConfig",
     "rest_framework",
+    'rest_framework.authtoken', #added for authentication
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication'
+    ] #added this for authentication
+}
 
 AUTH_USER_MODEL = "users.CustomUser"  # we add this , oly worth using Djangos version id you only have one user
 
