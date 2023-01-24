@@ -11,8 +11,8 @@ class CustomUserSerializer(serializers.Serializer):
     date_joined = serializers.DateTimeField(default= timezone.now) #added
     email = serializers.EmailField()
     image = serializers.URLField(default = "https://i.postimg.cc/rm82XhCm/default-profile-image.png") #added
-    bio = serializers.CharField(max_length=None, default = None) #added
-    qualifications = serializers.CharField(max_length=None, default = None) #added
+    bio = serializers.CharField(max_length=None) #added
+    qualifications = serializers.CharField(max_length=None) #added
     affiliate = serializers.CharField(max_length=200) #added
     password = serializers.CharField(write_only = True)
 

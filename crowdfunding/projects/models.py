@@ -1,7 +1,6 @@
 from django.db import models
 from django.contrib.auth import get_user_model #Django will find what model you are using
 
-# Create your models here.
 
 User = get_user_model()
 CATEGORIES = (
@@ -31,15 +30,27 @@ class Project(models.Model):
     title=models.CharField(max_length=200)
     description=models.TextField()
     goal=models.FloatField()
+    question_one = models.TextField() #added
+    question_two = models.TextField() #added
+    question_three = models.TextField() #added
     image=models.URLField()
     video=models.URLField()
     is_open=models.BooleanField()
     date_created=models.DateTimeField(auto_now_add=True) 
     #(above)tells django when created to add at current time
     category = models.CharField(max_length=200, null=True, choices= CATEGORIES)
+    project_email = models.EmailField()
     #choices-A sequence of 2-tuples to use as choices for this field. 
     # The default form widget will be a select box instead of the standard limited to the choices given.
     # The first element in tuple is value stored database. The second displayed by the field’s form widget.
+    innovation_star = models.ManyToManyField( #added
+        User,
+        related_name="innovation_star_projects"
+    )
+
+    @property #added
+    def total_stars(self):
+        return self.pledges.aggregate(sum=models.Sum('amount'))['sum']
     owner=models.ForeignKey( #need to change this (above) to foreignKey(other table primary key),user id
         User,
         on_delete=models.CASCADE,

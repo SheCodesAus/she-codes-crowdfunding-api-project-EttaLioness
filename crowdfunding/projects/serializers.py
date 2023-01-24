@@ -1,5 +1,7 @@
 from rest_framework import serializers
 from .models import Project, Pledge, CATEGORIES
+from users.serializers import CustomUserSerializer 
+#added for innovation star link
 
 class PledgeSerializers(serializers.ModelSerializer):
     class Meta:
@@ -28,12 +30,14 @@ class ProjectSerializer(serializers.Serializer):
     date_created = serializers.DateTimeField(read_only=True)
     owner = serializers.ReadOnlyField(source="owner.id") # when serialise we insert id of owner from model
     category = serializers.ChoiceField(choices = CATEGORIES)
+    total_stars = serializers.ReadOnlyField() #added for innovation star
 
-    def create(Self, validated_data):
+    def create(self, validated_data):
         return Project.objects.create(**validated_data)
 
 class ProjectDetailSerializer(ProjectSerializer):
     pledges = PledgeSerializers(many=True, read_only=True)
+    innovation_star = CustomUserSerializer(many=True, read_only=True) #added for innovation star
 
     def update(self, instance, validated_data):
         instance.title = validated_data.get('title', instance.title)
