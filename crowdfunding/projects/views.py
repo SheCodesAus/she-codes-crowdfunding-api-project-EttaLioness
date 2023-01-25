@@ -91,6 +91,13 @@ class PledgeList(generics.ListCreateAPIView): #to create a read-write endpoint t
     def perform_create(self, serializer):
         serializer.save(supporter=self.request.user)
 
+class PledgeDetail(generics.RetrieveUpdateDestroyAPIView):
+    permission_classes = [                             ###added for editing
+        permissions.IsAuthenticatedOrReadOnly,
+        IsOwnerOrReadOnly
+    ]
+    queryset = Pledge.objects.all()
+    serializer_class = PledgeSerializers
 # class PledgeDetail(generics.RetrieveUpdateDestroyAPIView): #for a read-write-delete endpoint for each individual Pledges
 #     queryset = Pledge.objects.all()
 #     serializer_class = PledgeSerializers

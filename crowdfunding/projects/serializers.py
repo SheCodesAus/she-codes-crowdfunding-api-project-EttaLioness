@@ -1,5 +1,7 @@
 from rest_framework import serializers
 from .models import Project, Pledge, CATEGORIES
+#from datetime import datetime, timedelta 
+#added for end_date
 from users.serializers import CustomUserSerializer 
 #added for innovation star link
 
@@ -27,11 +29,13 @@ class ProjectSerializer(serializers.Serializer):
     goal = serializers.IntegerField()
     image = serializers.URLField()
     is_open = serializers.BooleanField()
-    date_created = serializers.DateTimeField(read_only=True)
+    # date_created = serializers.DateTimeField(read_only=True)#(auto_now_add=True)    
+    # end_date = date_created + \
+    #      timedelta(days = 30)
     owner = serializers.ReadOnlyField(source="owner.id") # when serialise we insert id of owner from model
     category = serializers.ChoiceField(choices = CATEGORIES)
     total_stars = serializers.ReadOnlyField() #added for innovation star
-
+    total_amount_pledged = serializers.ReadOnlyField() #added decorator for pledged
     def create(self, validated_data):
         return Project.objects.create(**validated_data)
 

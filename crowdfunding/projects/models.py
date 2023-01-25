@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth import get_user_model #Django will find what model you are using
+#from datetime import timedelta #,datetime, 
 
 
 User = get_user_model()
@@ -36,7 +37,9 @@ class Project(models.Model):
     image=models.URLField()
     video=models.URLField()
     is_open=models.BooleanField()
-    date_created=models.DateTimeField(auto_now_add=True) 
+    # date_created=models.DateTimeField(auto_now_add=True)    #(auto_now_add=True) datetime.now()
+    # end_date = date_created + \
+    #     timedelta(days = 30)
     #(above)tells django when created to add at current time
     category = models.CharField(max_length=200, null=True, choices= CATEGORIES)
     project_email = models.EmailField()
@@ -51,6 +54,11 @@ class Project(models.Model):
     @property #added
     def total_stars(self):
         return self.pledges.aggregate(sum=models.Sum('amount'))['sum']
+
+    @property #added for pleged so far
+    def total_amount_pledged(self):
+        return self.pledges.aggregate(sum=models.Sum('amount'))['sum']
+
     owner=models.ForeignKey( #need to change this (above) to foreignKey(other table primary key),user id
         User,
         on_delete=models.CASCADE,
