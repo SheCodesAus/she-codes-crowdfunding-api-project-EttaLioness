@@ -1,7 +1,7 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from .models import Project, Pledge
-from .serializers import ProjectSerializer,ProjectDetailSerializer, PledgeSerializers
+from .serializers import ProjectSerializer,ProjectDetailSerializer, PledgeSerializers, PledgeDetailSerializer
 from django.http import Http404
 from rest_framework import status, generics, permissions
 from .permissions import IsOwnerOrReadOnly, IsSupporterOrReadOnly
@@ -104,7 +104,7 @@ class PledgeDetail(generics.RetrieveUpdateDestroyAPIView):
         IsSupporterOrReadOnly
     ]
     queryset = Pledge.objects.all()
-    serializer_class = PledgeSerializers
+    serializer_class = PledgeDetailSerializer
 # class PledgeDetail(generics.RetrieveUpdateDestroyAPIView): #for a read-write-delete endpoint for each individual Pledges
 #     queryset = Pledge.objects.all()
 #     serializer_class = PledgeSerializers

@@ -17,11 +17,18 @@ class PledgeSerializers(serializers.ModelSerializer):
     # comment = serializers.CharField(max_length=200)
     # anonymous = serializers.BooleanField()
     # supporter = serializers.CharField(max_length=200)
-    # project_id = serializers.IntegerField() #drf id making from the project variable in model
+    # project = serializers.IntegerField() #drf id making from the project variable in model
 
     def create(self, validated_data):
         return Pledge.objects.create(**validated_data)#** unpacks the list into individual items
 
+class PledgeDetailSerializer(PledgeSerializers):
+    def update(self, instance, validated_data):
+        instance.amount = validated_data.get('amount', instance.amount)
+        instance.comment = validated_data.get('comment', instance.comment)
+        instance.save()
+        return instance
+        
 class ProjectSerializer(serializers.Serializer):
     id = serializers.ReadOnlyField() #readOnly so users cant choose
     title = serializers.CharField(max_length=200)
@@ -36,6 +43,7 @@ class ProjectSerializer(serializers.Serializer):
     category = serializers.ChoiceField(choices = CATEGORIES)
     total_stars = serializers.ReadOnlyField() #added for innovation star
     total_amount_pledged = serializers.ReadOnlyField() #added decorator for pledged
+    
     def create(self, validated_data):
         return Project.objects.create(**validated_data)
 
@@ -51,5 +59,6 @@ class ProjectDetailSerializer(ProjectSerializer):
         instance.is_open = validated_data.get('is_open', instance.is_open)
         instance.date_created = validated_data.get('date_created', instance.date_created)
         instance.owner = validated_data.get('owner', instance.owner)
+        instance.category = validated_data.get('category', instance.category)
         instance.save()
         return instance
