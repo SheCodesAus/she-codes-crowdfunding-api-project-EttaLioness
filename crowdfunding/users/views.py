@@ -19,9 +19,14 @@ class CustomUserList(APIView):
         serializer = CustomUserSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors)
-
+            return Response(
+                serializer.data,
+                status=status.HTTP_201_CREATED
+            )
+        return Response(
+            serializer.errors,
+            status=status.HTTP_400_BAD_REQUEST
+        )
 class CustomUserDetail(APIView):
     def get_object(self, pk):
         try:
@@ -33,3 +38,25 @@ class CustomUserDetail(APIView):
         user = self.get_object(pk)
         serializer = CustomUserSerializer(user)
         return Response(serializer.data)
+
+    # def put(self, request, pk):
+    #     user = self.get_object(pk)
+    #     data = request.data
+    #     serializer = ProjectDetailSerializer(
+    #         instance = project,
+    #         data=data,
+    #         partial=True
+    #     )
+    #     if serializer.is_valid():
+    #         serializer.save()
+    #         return Response(serializer.data)
+    #     return Response(
+    #         serializer.errors,
+    #         status=status.HTTP_400_BAD_REQUEST
+    #     )
+    #         ####Added what happens if not valid like above
+
+    # def delete(self, request, pk, format=None):
+    #     project = self.get_object(pk)
+    #     project.delete()
+    #     return Response(status=status.HTTP_204_NO_CONTENT)

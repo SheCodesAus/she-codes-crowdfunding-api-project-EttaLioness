@@ -37,7 +37,7 @@ class Project(models.Model):
     image=models.URLField()
     video=models.URLField()
     is_open=models.BooleanField()
-    # date_created=models.DateTimeField(auto_now_add=True)    #(auto_now_add=True) datetime.now()
+    date_created=models.DateTimeField(auto_now_add=True)    #(auto_now_add=True) datetime.now()
     # end_date = date_created + \
     #     timedelta(days = 30)
     #(above)tells django when created to add at current time
@@ -50,16 +50,18 @@ class Project(models.Model):
         User,
         related_name="innovation_star_projects"
     )
+    #    # NEED TO ADD amount_pledged = models.ManyToManyField( User, related_name = "pledges") 
+    # #add to serializer too amount_pledged#
 
-    @property #added
+    @property #added , look up decorators
     def total_stars(self):
-        return self.pledges.aggregate(sum=models.Sum('amount'))['sum']
+        return self.innovation_star_projects.aggregate(sum=models.Sum('amount'))['sum']
 
-    @property #added for pleged so far
+    @property #added for pledged so far
     def total_amount_pledged(self):
         return self.pledges.aggregate(sum=models.Sum('amount'))['sum']
 
-    owner=models.ForeignKey( #need to change this (above) to foreignKey(other table primary key),user id
+    owner=models.ForeignKey(
         User,
         on_delete=models.CASCADE,
         related_name="owner_projects"

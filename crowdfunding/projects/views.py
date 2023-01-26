@@ -4,10 +4,11 @@ from .models import Project, Pledge
 from .serializers import ProjectSerializer,ProjectDetailSerializer, PledgeSerializers
 from django.http import Http404
 from rest_framework import status, generics, permissions
-from .permissions import IsOwnerOrReadOnly
+from .permissions import IsOwnerOrReadOnly, IsSupporterOrReadOnly
 
 class ProjectList(APIView):
     permission_classes = [permissions.IsAuthenticatedOrReadOnly] #built in django to allow only logged in
+    
     def get(self, request):
         projects = Project.objects.all()
         serializer = ProjectSerializer(projects, many=True) #get list of many projects not one
@@ -55,7 +56,11 @@ class ProjectDetail(APIView):
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
-            ####Add what happens if not valid like above
+        return Response(
+            serializer.errors,
+            status=status.HTTP_400_BAD_REQUEST
+        )
+            ####Added what happens if not valid like above
 
     def delete(self, request, pk, format=None):
         project = self.get_object(pk)
@@ -87,14 +92,16 @@ class ProjectDetail(APIView):
 class PledgeList(generics.ListCreateAPIView): #to create a read-write endpoint that lists all available Pledge instances
     queryset = Pledge.objects.all()
     serializer_class = PledgeSerializers
-
+    permission_classes = [                             ###added for editing
+        permissions.IsAuthenticatedOrReadOnly
+    ]
     def perform_create(self, serializer):
         serializer.save(supporter=self.request.user)
 
 class PledgeDetail(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [                             ###added for editing
         permissions.IsAuthenticatedOrReadOnly,
-        IsOwnerOrReadOnly
+        IsSupporterOrReadOnly
     ]
     queryset = Pledge.objects.all()
     serializer_class = PledgeSerializers
