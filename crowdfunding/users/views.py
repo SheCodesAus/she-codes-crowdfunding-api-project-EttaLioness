@@ -10,8 +10,7 @@ from .permissions import IsOwnerOrReadOnly
 # Create your views here.
 
 class CustomUserList(APIView):
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly] 
-
+    
     def get(self, request):
         users = CustomUser.objects.all()
         serializer = CustomUserSerializer(users, many=True)
@@ -36,8 +35,10 @@ class CustomUserDetail(APIView):
     ]
 
     def get_object(self, pk):
-        try:
-            return CustomUser.objects.get(pk=pk)
+        try:# return Project.objects.get(pk=pk) #passing the input in as an attribute
+            user = CustomUser.objects.get(pk=pk)
+            self.check_object_permissions(self.request, user)
+            return user
         except CustomUser.DoesNotExist:
             raise Http404
 
@@ -61,7 +62,7 @@ class CustomUserDetail(APIView):
             serializer.errors,
             status=status.HTTP_400_BAD_REQUEST
         )
-    #         ####Added what happens if not valid like above
+    #         Dont want to delete User for now.
 
     # def delete(self, request, pk, format=None):
     #     project = self.get_object(pk)

@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth import get_user_model #Django will find what model you are using
-#from datetime import timedelta #,datetime, 
+from datetime import datetime, timedelta
 
 
 User = get_user_model()
@@ -24,7 +24,8 @@ CATEGORIES = (
     ("Psych", "Pschycology"),
     ("Anthropology", "Anthropology"),
     ("Art and Design", "Art and Design"),
-    ("Political Sc", "Political Science")
+    ("Political Sc", "Political Science"),
+    ("Astro", "Astrophysics")
     
 )
 class Project(models.Model):
@@ -34,12 +35,12 @@ class Project(models.Model):
     question_one = models.TextField() #added
     question_two = models.TextField() #added
     question_three = models.TextField() #added
-    image=models.URLField()
+    image=models.URLField(default="https://i.postimg.cc/pLgqMZxh/test-g95215e4ee-1280.jpg")
     video=models.URLField()
-    is_open=models.BooleanField()
-    date_created=models.DateTimeField(auto_now_add=True)    #(auto_now_add=True) datetime.now()
-    # end_date = date_created + \
-    #     timedelta(days = 30)
+    is_open=models.BooleanField(default=True)
+    #date_created=models.DateTimeField(datetime.now())    #(auto_now_add=True) datetime.now()
+    date_created = models.DateTimeField(default=datetime.now)
+    end_date = models.DateTimeField(default=(datetime.now() + timedelta(days=30)))
     #(above)tells django when created to add at current time
     category = models.CharField(max_length=200, null=True, choices= CATEGORIES)
     project_email = models.EmailField()

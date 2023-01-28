@@ -8,7 +8,7 @@ class CustomUserSerializer(serializers.Serializer):
     first_name = serializers.CharField(max_length=200) #added
     last_name = serializers.CharField(max_length=200) #added
     username = serializers.CharField(max_length=200)
-    date_joined = serializers.DateTimeField(default= timezone.now) #added
+    date_joined = serializers.DateTimeField(read_only=True) #added
     email = serializers.EmailField()
     image = serializers.URLField(default = "https://i.postimg.cc/rm82XhCm/default-profile-image.png") #added
     bio = serializers.CharField(max_length=None) #added
@@ -18,7 +18,15 @@ class CustomUserSerializer(serializers.Serializer):
 
     def create(self, validated_data):
         return CustomUser.objects.create_user(**validated_data)
+        
+# class CustomUserSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = CustomUser
+#         fields = ['id', 'first_name', 'last_name', 'email', 'username', 'password',]
+#         read_only_fields = ['id', 'email', 'username',]
 
+        # def create(self, validated_data):
+        #     return CustomUser.objects.create_user(**validated_data)
 class CustomUserDetailSerializer(CustomUserSerializer):
 
     def update(self, instance, validated_data):
@@ -30,15 +38,15 @@ class CustomUserDetailSerializer(CustomUserSerializer):
         instance.bio = validated_data.get('bio', instance.bio)
         instance.qualifications = validated_data.get('qualifications', instance.qualifications)
         instance.affiliate = validated_data.get('affiliate', instance.affiliate)
-        instance.password = validated_data.get('password', instance.password)
+        # instance.password = validated_data.get('password', instance.password)
         instance.save()
         return instance
 
-# class CustomUserSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = CustomUser
-#         fields = ['id', 'first_name', 'last_name', 'email', 'username', 'password',]
-#         read_only_fields = ['id', 'email', 'username',]
+class ChangePasswordSerializer(serializers.Serializer):
+    model = CustomUser
 
-        # def create(self, validated_data):
-        #     return CustomUser.objects.create_user(**validated_data)
+    """
+    Serializer for password change endpoint.
+    """
+    old_password = serializers.CharField(required=True)
+    new_password = serializers.CharField(required=True)

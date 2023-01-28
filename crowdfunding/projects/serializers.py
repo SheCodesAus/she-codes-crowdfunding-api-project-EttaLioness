@@ -44,8 +44,7 @@ class ProjectSerializer(serializers.Serializer):
     image = serializers.URLField()
     is_open = serializers.BooleanField()
     date_created = serializers.DateTimeField(read_only=True)#(auto_now_add=True)    
-    # end_date = date_created + \
-    #      timedelta(days = 30)
+    end_date = serializers.DateTimeField(read_only=True)
     owner = serializers.ReadOnlyField(source="owner.id") # when serialise we insert id of owner from model
     category = serializers.ChoiceField(choices = CATEGORIES)
     total_stars = serializers.ReadOnlyField() #added for innovation star
