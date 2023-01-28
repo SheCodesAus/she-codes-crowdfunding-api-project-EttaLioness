@@ -23,6 +23,13 @@ class PledgeSerializers(serializers.ModelSerializer):
         return Pledge.objects.create(**validated_data)#** unpacks the list into individual items
 
 class PledgeDetailSerializer(PledgeSerializers):
+    # id = serializers.ReadOnlyField()
+    # amount = serializers.FloatField()
+    # comment = serializers.CharField(max_length=None)
+    # supporter = serializers.ReadOnlyField(source='supporter.id')
+    # anonymous = serializers.BooleanField
+    # project = serializers.ReadOnlyField()
+
     def update(self, instance, validated_data):
         instance.amount = validated_data.get('amount', instance.amount)
         instance.comment = validated_data.get('comment', instance.comment)
@@ -62,3 +69,5 @@ class ProjectDetailSerializer(ProjectSerializer):
         instance.category = validated_data.get('category', instance.category)
         instance.save()
         return instance
+
+    

@@ -11,6 +11,10 @@ class ProjectList(APIView):
     
     def get(self, request):
         projects = Project.objects.all()
+        if request.data.get("category"):
+            projects = projects.filter(category=request.data.get("category"))
+        if request.data.get("owner"):
+            projects = projects,filter(owner=request.data.get("owner"))
         serializer = ProjectSerializer(projects, many=True) #get list of many projects not one
         return Response(serializer.data)
 
@@ -105,6 +109,3 @@ class PledgeDetail(generics.RetrieveUpdateDestroyAPIView):
     ]
     queryset = Pledge.objects.all()
     serializer_class = PledgeDetailSerializer
-# class PledgeDetail(generics.RetrieveUpdateDestroyAPIView): #for a read-write-delete endpoint for each individual Pledges
-#     queryset = Pledge.objects.all()
-#     serializer_class = PledgeSerializers

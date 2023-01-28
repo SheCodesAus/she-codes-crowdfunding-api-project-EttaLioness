@@ -19,6 +19,21 @@ class CustomUserSerializer(serializers.Serializer):
     def create(self, validated_data):
         return CustomUser.objects.create_user(**validated_data)
 
+class CustomUserDetailSerializer(CustomUserSerializer):
+
+    def update(self, instance, validated_data):
+        instance.first_name = validated_data.get('first_name', instance.first_name)
+        instance.last_name = validated_data.get('last_name', instance.last_name)
+        instance.username = validated_data.get('username', instance.username)
+        instance.image = validated_data.get('image', instance.image)
+        instance.email = validated_data.get('email', instance.email)
+        instance.bio = validated_data.get('bio', instance.bio)
+        instance.qualifications = validated_data.get('qualifications', instance.qualifications)
+        instance.affiliate = validated_data.get('affiliate', instance.affiliate)
+        instance.password = validated_data.get('password', instance.password)
+        instance.save()
+        return instance
+
 # class CustomUserSerializer(serializers.ModelSerializer):
 #     class Meta:
 #         model = CustomUser
