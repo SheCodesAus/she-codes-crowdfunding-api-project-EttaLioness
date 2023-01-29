@@ -4,6 +4,7 @@ from datetime import datetime, timedelta
 
 
 User = get_user_model()
+
 CATEGORIES = (
     ("Eng", "Engineering"),
     ("Chem", "Chemistry"),
@@ -80,5 +81,5 @@ class Pledge(models.Model):
     supporter = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
-        related_name="supporter_pledges"
+        related_name="supporters_of_project"
     )

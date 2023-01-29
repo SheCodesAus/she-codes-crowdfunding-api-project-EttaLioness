@@ -42,11 +42,11 @@ class CustomUserDetailSerializer(CustomUserSerializer):
         instance.save()
         return instance
 
-class ChangePasswordSerializer(serializers.Serializer):
-    model = CustomUser
+# class ChangePasswordSerializer(serializers.Serializer):
+#     model = CustomUser
 
-    """
-    Serializer for password change endpoint.
-    """
-    old_password = serializers.CharField(required=True)
-    new_password = serializers.CharField(required=True)
+#     """
+#     Serializer for password change endpoint.
+#     """
+#     old_password = serializers.CharField(required=True)
+#     new_password = serializers.CharField(required=True)

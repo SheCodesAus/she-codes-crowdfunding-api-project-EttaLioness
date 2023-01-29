@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     
     "projects.apps.ProjectsConfig", #ProjectsConfig more specific
     "users.apps.UsersConfig",
+    "projectroles.apps.ProjectrolesConfig",
     "rest_framework",
     'rest_framework.authtoken', #added for authentication
     'corsheaders',

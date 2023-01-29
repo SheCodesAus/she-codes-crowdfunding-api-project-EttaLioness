@@ -2,8 +2,9 @@ from rest_framework import serializers
 from .models import Project, Pledge, CATEGORIES
 #from datetime import datetime, timedelta 
 #added for end_date
-from users.serializers import CustomUserSerializer 
-#added for innovation star link
+from users.serializers import CustomUserSerializer #added for innovation star link
+from projectroles.serializers import ProjectrolesSerializers
+
 
 class PledgeSerializers(serializers.ModelSerializer):
     class Meta:
@@ -54,7 +55,9 @@ class ProjectSerializer(serializers.Serializer):
         return Project.objects.create(**validated_data)
 
 class ProjectDetailSerializer(ProjectSerializer):
-    pledges = PledgeSerializers(many=True, read_only=True)
+    pledges = PledgeSerializers(many=True, read_only=True) 
+    supporters_of_project = CustomUserSerializer(many=True, read_only=True)
+    roles = ProjectrolesSerializers(many=True, read_only=True)#added to display project_roles
     innovation_star = CustomUserSerializer(many=True, read_only=True) #added for innovation star
 
     def update(self, instance, validated_data):
@@ -63,10 +66,8 @@ class ProjectDetailSerializer(ProjectSerializer):
         instance.goal = validated_data.get('goal', instance.goal)
         instance.image = validated_data.get('image', instance.image)
         instance.is_open = validated_data.get('is_open', instance.is_open)
-        instance.date_created = validated_data.get('date_created', instance.date_created)
-        instance.owner = validated_data.get('owner', instance.owner)
         instance.category = validated_data.get('category', instance.category)
         instance.save()
         return instance
 
-    
+    #do I want to update owner, date_created?

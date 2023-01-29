@@ -14,7 +14,9 @@ class ProjectList(APIView):
         if request.data.get("category"):
             projects = projects.filter(category=request.data.get("category"))
         if request.data.get("owner"):
-            projects = projects,filter(owner=request.data.get("owner"))
+            projects = projects.filter(owner=request.data.get("owner"))
+        if request.data.get("title"):
+            projects = projects.filter(title=request.data.get("title"))
         serializer = ProjectSerializer(projects, many=True) #get list of many projects not one
         return Response(serializer.data)
 
