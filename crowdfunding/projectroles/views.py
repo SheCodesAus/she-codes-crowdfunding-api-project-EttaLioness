@@ -48,7 +48,7 @@ class ProjectrolesDetail(APIView):
         except Projectroles.DoesNotExist:
             raise Http404 #means resource does not exit, user did something wrong
     def get(self, request, pk):
-        project = self.get_object(pk)
+        roles = self.get_object(pk)
         serializer = ProjectrolesDetailSerializers(roles)
         return Response(serializer.data)
 
