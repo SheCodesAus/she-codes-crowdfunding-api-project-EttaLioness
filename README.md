@@ -179,7 +179,7 @@ CRUD execution:
 
 ## Database Schema
 
-![img](researchresearchMob_database_schema.png)
+![Database Schema](researchMob_database_schema.png)
 
 ## Part A Submission Checklist
 ​
