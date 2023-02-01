@@ -134,7 +134,7 @@ This could be a scientist that creates or is apart of a project team; or simply 
         -Project Title
         -Project Name
         -Project roles by project
-​        -Project roles by user that created project roles
+        -Project roles by user that created project roles
         (across mutiple projects; applies if user created multiple projects)
 
 - [ ] BudgetItems (Not yet executed)
@@ -179,7 +179,7 @@ CRUD execution:
 
 ## Database Schema
 
-![img](diagram_schema.png)
+![img](researchresearchMob_database_schema.png)
 
 ## Part A Submission Checklist
 ​
