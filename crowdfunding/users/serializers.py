@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from .models import CustomUser
 from django.utils import timezone #added
+# from rest_framework.validators import UniqueValidator
 
 class CustomUserSerializer(serializers.Serializer):
 
@@ -8,6 +9,13 @@ class CustomUserSerializer(serializers.Serializer):
     first_name = serializers.CharField(max_length=200) #added
     last_name = serializers.CharField(max_length=200) #added
     username = serializers.CharField(max_length=200)
+#     username = serializers.CharField(max_length=100, validators=[
+#         UniqueValidator(
+#             queryset=CustomUser.objects.all(),
+#             message=("Name already exists")
+#         )
+#     ]
+# )
     date_joined = serializers.DateTimeField(read_only=True) #added
     email = serializers.EmailField()
     image = serializers.URLField(default = "https://i.postimg.cc/rm82XhCm/default-profile-image.png") #added

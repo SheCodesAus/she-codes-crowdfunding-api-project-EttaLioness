@@ -5,6 +5,10 @@ from datetime import datetime, timedelta
 
 User = get_user_model()
 
+    #choices-A sequence of 2-tuples to use as choices for this field. 
+    # The default form widget will be a select box instead of the standard limited to the choices given.
+    # The first element in tuple is value stored database. The second displayed by the field’s form widget.
+
 CATEGORIES = (
     ("Eng", "Engineering"),
     ("Chem", "Chemistry"),
@@ -45,9 +49,6 @@ class Project(models.Model):
     #(above)tells django when created to add at current time
     category = models.CharField(max_length=200, null=True, choices= CATEGORIES)
     project_email = models.EmailField()
-    #choices-A sequence of 2-tuples to use as choices for this field. 
-    # The default form widget will be a select box instead of the standard limited to the choices given.
-    # The first element in tuple is value stored database. The second displayed by the field’s form widget.
     innovation_star = models.ManyToManyField( #added
         User,
         related_name="innovation_star_projects"

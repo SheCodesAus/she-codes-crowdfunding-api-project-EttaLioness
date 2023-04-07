@@ -10,7 +10,7 @@ class ProjectList(APIView):
     permission_classes = [permissions.IsAuthenticatedOrReadOnly] #built in django to allow only logged in
     
     def get(self, request):
-        projects = Project.objects.all()
+        projects = Project.objects.all().order_by('-date_created').values()
         if request.data.get("category"):
             projects = projects.filter(category=request.data.get("category"))
         if request.data.get("owner"):
