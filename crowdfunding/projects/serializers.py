@@ -41,6 +41,9 @@ class ProjectSerializer(serializers.Serializer):
     id = serializers.ReadOnlyField() #readOnly so users cant choose
     title = serializers.CharField(max_length=200)
     description = serializers.CharField(max_length=None)
+    question_one = serializers.CharField(max_length=None)
+    question_two = serializers.CharField(max_length=None)
+    question_three = serializers.CharField(max_length=None)
     goal = serializers.IntegerField()
     image = serializers.URLField()
     is_open = serializers.BooleanField()
@@ -67,6 +70,9 @@ class ProjectDetailSerializer(ProjectSerializer):
         instance.image = validated_data.get('image', instance.image)
         instance.is_open = validated_data.get('is_open', instance.is_open)
         instance.category = validated_data.get('category', instance.category)
+        instance.question_one = validated_data.get('question_one', instance.question_one)
+        instance.question_two = validated_data.get('question_two', instance.question_two)
+        instance.question_three = validated_data.get('question_three', instance.question_three)
         instance.save()
         return instance
 
